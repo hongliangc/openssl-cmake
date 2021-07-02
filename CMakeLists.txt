@@ -109,8 +109,8 @@ if( MSVC )
   set( OPENSSLDIR "C:/ssl" )
   set( ENGINESDIR "C:/engines-1.1" )
 else()
-  set( OPENSSLDIR "/usr/local/ssl" )
-  set( ENGINESDIR "/usr/local/engines-1.1" )
+  set( OPENSSLDIR "${CMAKE_INSTALL_PREFIX}/ssl" )
+  set( ENGINESDIR "${CMAKE_INSTALL_PREFIX}/engines-1.1" )
 endif()
 add_definitions( "-DOPENSSLDIR=\"${OPENSSLDIR}\"" )
 add_definitions( "-DENGINESDIR=\"${ENGINESDIR}\"" )
@@ -170,9 +170,21 @@ set( CONF "
 ${CONF}" )
 file( WRITE ${PROJECT_BINARY_DIR}/opensslconf.h.cmake "${CONF}" )
 
+
+set(LIBRARY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/Bin/${PLATFORM}/${VERSION}")
+set(EXECUTABLE_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/Bin/${PLATFORM}/${VERSION}")
+
+file( COPY ${PROJECT_SOURCE_DIR}/include/internal DESTINATION "${PROJECT_SOURCE_DIR}/Bin/${PLATFORM}/${VERSION}/include" )
+file( COPY ${PROJECT_SOURCE_DIR}/include/crypto DESTINATION "${PROJECT_SOURCE_DIR}/Bin/${PLATFORM}/${VERSION}/include" )
+file( COPY ${PROJECT_SOURCE_DIR}/include/openssl DESTINATION "${PROJECT_SOURCE_DIR}/Bin/${PLATFORM}/${VERSION}/include" )
+
 configure_file( ${PROJECT_BINARY_DIR}/opensslconf.h.cmake
   ${PROJECT_BINARY_DIR}/include/openssl/opensslconf.h )
 # End configure public headers
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -w -m32")  
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -w -m32")
+
 
 add_subdirectory(crypto)
 add_subdirectory(ssl)

@@ -278,21 +278,32 @@ else()
   add_submodule ( . threads_pthread.c )
 endif()
 
+#∏Ωº”±‡“Î—°œÓ
+add_definitions(-fPIC)
+
 add_library( crypto ${LIBSRC} ${OBJECTS_SRC} )
 
 target_include_directories( crypto PUBLIC ${PROJECT_BINARY_DIR}/include )
 
+add_library( crypto_share SHARED ${LIBSRC} ${OBJECTS_SRC} )
+target_include_directories( crypto_share PUBLIC ${PROJECT_BINARY_DIR}/include )
+
+
 if( WIN32 AND NOT CYGWIN )
   target_link_libraries( crypto ws2_32 crypt32 )
+  target_link_libraries( crypto_share ws2_32 crypt32 )
 else()
   if( Threads_FOUND )
     target_link_libraries( crypto ${CMAKE_THREAD_LIBS_INIT} )
+    target_link_libraries( crypto_share ${CMAKE_THREAD_LIBS_INIT} )
   endif()
   if( DSO_DLFCN AND HAVE_DLFCN_H )
     target_link_libraries( crypto dl )
+    target_link_libraries( crypto_share dl )
   endif()
 endif()
 
+set_target_properties(crypto_share PROPERTIES OUTPUT_NAME "crypto")
 set_target_properties( crypto PROPERTIES
   VERSION "${LIB_VERSION}" SOVERSION "${LIB_SOVERSION}" )
 

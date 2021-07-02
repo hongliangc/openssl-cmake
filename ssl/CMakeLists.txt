@@ -43,15 +43,26 @@ include_directories( BEFORE SYSTEM
   ${PROJECT_SOURCE_DIR}/ # e_os.h
 )
 
+#∏Ωº”±‡“Î—°œÓ
+add_definitions(-fPIC)
+
 add_library( ssl ${LIBSRC} )
 
 target_include_directories( ssl PUBLIC ${PROJECT_BINARY_DIR}/include )
 
 target_link_libraries( ssl crypto )
 
+
+add_library( ssl_share SHARED ${LIBSRC} )
+target_include_directories( ssl_share PUBLIC ${PROJECT_BINARY_DIR}/include )
+target_link_libraries( ssl_share crypto )
+
+
+
 set_target_properties( ssl PROPERTIES
   VERSION "${LIB_VERSION}" SOVERSION "${LIB_SOVERSION}" )
 
+set_target_properties(ssl_share PROPERTIES OUTPUT_NAME "ssl")
 if( ANDROID )
   set_target_properties( ssl PROPERTIES OUTPUT_NAME "ssl_1_1" )
 endif()
@@ -64,7 +75,7 @@ if( MSVC )
   endif()
 endif()
 
-install( TARGETS ssl
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib )
+# install( TARGETS ssl
+    # RUNTIME DESTINATION bin
+    # LIBRARY DESTINATION lib
+    # ARCHIVE DESTINATION lib )
