@@ -182,8 +182,8 @@ configure_file( ${PROJECT_BINARY_DIR}/opensslconf.h.cmake
   ${PROJECT_BINARY_DIR}/include/openssl/opensslconf.h )
 # End configure public headers
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -w -m32")  
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -w -m32")
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -w -m32")  
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -w -m32")
 
 
 add_subdirectory(crypto)
